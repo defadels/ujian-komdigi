@@ -1,0 +1,31 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('carousel', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama_carousel')->nullable();           // Contoh: Aduan Konten, Cek Rekening
+            $table->text('deskripsi')->nullable();                // Penjelasan singkat layanan
+            $table->text('gambar')->nullable();                // Penjelasan singkat layanan
+            $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
+            $table->timestamps();
+    });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('carousel');
+    }
+};
