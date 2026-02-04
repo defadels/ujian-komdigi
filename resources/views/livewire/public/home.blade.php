@@ -1,38 +1,61 @@
 <div>
     <!-- Carousel Section -->
     @if($carousels->count() > 0)
-    <div x-data="{ activeSlide: 0, slides: {{ $carousels->count() }} }" class="relative bg-gray-900 overflow-hidden h-[500px]">
+    <div x-data="{ 
+            activeSlide: 0, 
+            slides: {{ $carousels->count() }},
+            init() {
+                setInterval(() => {
+                    this.activeSlide = (this.activeSlide + 1) % this.slides;
+                }, 5000);
+            }
+         }" class="relative bg-gray-900 overflow-hidden h-[400px] md:h-[550px]">
         @foreach($carousels as $index => $carousel)
         <div x-show="activeSlide === {{ $index }}" 
-             x-transition:enter="transition ease-out duration-500"
-             x-transition:enter-start="opacity-0 transform scale-95"
+             x-transition:enter="transition ease-out duration-700"
+             x-transition:enter-start="opacity-0 transform scale-110"
              x-transition:enter-end="opacity-100 transform scale-100"
-             x-transition:leave="transition ease-in duration-300"
+             x-transition:leave="transition ease-in duration-500"
              x-transition:leave-start="opacity-100 transform scale-100"
-             x-transition:leave-end="opacity-0 transform scale-95"
+             x-transition:leave-end="opacity-0 transform scale-110"
              class="absolute inset-0">
-            <img src="{{ asset('storage/' . $carousel->gambar) }}" class="w-full h-full object-cover opacity-60" alt="{{ $carousel->nama_carousel }}">
+            <img src="{{ asset('storage/' . $carousel->gambar) }}" class="w-full h-full object-cover opacity-50" alt="{{ $carousel->nama_carousel }}">
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>
             <div class="absolute inset-0 flex items-center justify-center">
-                <div class="text-center px-4 max-w-3xl">
-                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">{{ $carousel->nama_carousel }}</h2>
-                    <p class="text-xl text-gray-200 mb-8">{{ $carousel->deskripsi }}</p>
+                <div class="text-center px-4 max-w-4xl">
+                    <h2 class="text-4xl md:text-6xl font-black text-white mb-6 drop-shadow-2xl leading-tight">
+                        {{ $carousel->nama_carousel }}
+                    </h2>
+                    <p class="text-lg md:text-2xl text-gray-100 mb-10 max-w-2xl mx-auto drop-shadow-lg font-medium opacity-90">
+                        {{ $carousel->deskripsi }}
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#layanan" class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl transition-all shadow-xl shadow-blue-500/20">
+                            Mulai Sekarang
+                        </a>
+                        <a href="{{ route('about') }}" class="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-2xl backdrop-blur-md transition-all border border-white/20">
+                            Pelajari Lebih Lanjut
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
         @endforeach
 
         <!-- Navigation Arrows -->
-        <button @click="activeSlide = activeSlide === 0 ? slides - 1 : activeSlide - 1" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white p-2 rounded-full focus:outline-none">
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        <button @click="activeSlide = activeSlide === 0 ? slides - 1 : activeSlide - 1" class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 backdrop-blur-lg text-white p-4 rounded-2xl focus:outline-none transition-all group border border-white/20">
+            <svg class="h-6 w-6 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" /></svg>
         </button>
-        <button @click="activeSlide = activeSlide === slides - 1 ? 0 : activeSlide + 1" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white p-2 rounded-full focus:outline-none">
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+        <button @click="activeSlide = activeSlide === slides - 1 ? 0 : activeSlide + 1" class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 backdrop-blur-lg text-white p-4 rounded-2xl focus:outline-none transition-all group border border-white/20">
+            <svg class="h-6 w-6 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
         </button>
         
         <!-- Indicators -->
-        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-3">
             @for($i = 0; $i < $carousels->count(); $i++)
-            <button @click="activeSlide = {{ $i }}" :class="activeSlide === {{ $i }} ? 'bg-blue-600' : 'bg-gray-400'" class="w-3 h-3 rounded-full focus:outline-none"></button>
+            <button @click="activeSlide = {{ $i }}" 
+                    :class="activeSlide === {{ $i }} ? 'bg-blue-600 w-10' : 'bg-white/40 w-3'" 
+                    class="h-1.5 rounded-full focus:outline-none transition-all duration-300"></button>
             @endfor
         </div>
     </div>

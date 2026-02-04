@@ -21,12 +21,13 @@ Route::get('/oauth/google', [App\Http\Controllers\Auth\SocialiteController::clas
 Route::get('/oauth/google/callback', [App\Http\Controllers\Auth\SocialiteController::class, 'handleGoogleCallback']);
 
 
+use App\Livewire\Admin\DashboardIndex;
 use App\Livewire\Admin\UserIndex;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         if (auth()->user()->role === 'admin') {
-            return redirect()->route('admin.categories');
+            return redirect()->route('admin.dashboard');
         }
         return view('dashboard');
     })->name('dashboard');
@@ -35,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Admin Routes
     Route::middleware(['admin'])->group(function () {
+        Route::get('/admin/dashboard', DashboardIndex::class)->name('admin.dashboard');
         Route::get('/admin/kategori-layanan', CategoryIndex::class)->name('admin.categories');
         Route::get('/admin/layanan', ServiceIndex::class)->name('admin.services');
         Route::get('/admin/carousel', CarouselIndex::class)->name('admin.carousel');
