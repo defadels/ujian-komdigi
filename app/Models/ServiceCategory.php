@@ -12,6 +12,7 @@ class ServiceCategory extends Model
         'nama_kategori',
         'deskripsi',
         'status',
+        'icon',
     ];
 
     public function service(){

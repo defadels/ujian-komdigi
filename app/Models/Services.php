@@ -14,6 +14,7 @@ class Services extends Model
         'kategori_id',
         'url_akses',
         'status',
+        'thumbnail',
     ];
 
     public function kategori()
