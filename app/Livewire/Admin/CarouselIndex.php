@@ -75,10 +75,10 @@ class CarouselIndex extends Component
             if ($this->old_gambar) {
                 Storage::disk('public')->delete($this->old_gambar);
             }
-            $data['gambar'] = $this->gambar->store('carousels', 'public');
+            $data['gambar'] = $this->gambar->store('carousel', 'public');
         }
 
-        Carousel::updateOrCreate(['id' => $this->carouselId], $data);
+        Carousel::updateOrCreate(['id' => $this->carouselId ?: null], $data);
 
         session()->flash('message', 
             $this->carouselId ? 'Carousel berhasil diperbarui.' : 'Carousel berhasil ditambahkan.');

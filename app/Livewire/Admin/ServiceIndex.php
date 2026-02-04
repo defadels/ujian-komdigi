@@ -86,7 +86,7 @@ class ServiceIndex extends Component
             $data['thumbnail'] = $this->thumbnail->store('services', 'public');
         }
 
-        Services::updateOrCreate(['id' => $this->serviceId], $data);
+        Services::updateOrCreate(['id' => $this->serviceId ?: null], $data);
 
         session()->flash('message', 
             $this->serviceId ? 'Layanan berhasil diperbarui.' : 'Layanan berhasil ditambahkan.');
